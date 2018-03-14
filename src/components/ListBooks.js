@@ -4,13 +4,16 @@ import { Link } from "react-router-dom";
 import BookShelf from './BookShelf'
 
 class ListBook extends Component {
-
   static propTypes = {
     books: PropTypes.array.isRequired,
     onShelfChange: PropTypes.func.isRequired
   }
+
+  getBooksByShelf(shelf) {
+    return this.props.books.filter((b) => b.shelf === shelf)
+  }
   render() {
-    const {books, onShelfChange} = this.props
+    const {onShelfChange} = this.props
     return(
       <div className="list-books">
         <div className="list-books-title">
@@ -20,7 +23,15 @@ class ListBook extends Component {
           <div>
             <BookShelf
               name="Currently Reading"
-              books={books}
+              books={this.getBooksByShelf("currentlyReading")}
+              onShelfChange={onShelfChange}/>
+            <BookShelf
+              name="Want to Read"
+              books={this.getBooksByShelf("wantToRead")}
+              onShelfChange={onShelfChange}/>
+            <BookShelf
+              name="Read"
+              books={this.getBooksByShelf("read")}
               onShelfChange={onShelfChange}/>
           </div>
         </div>
