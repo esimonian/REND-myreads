@@ -31,26 +31,30 @@ class Search extends Component {
   }
 
   searchBookShelving(searchBooks) {
+    console.log(this.props.books.filter((b) => b.shelf === 'read'))
     var ourBooks = this.props.books
-    searchBooks.map((book) => {
-      ourBooks.forEach((b) => {
-        if (book.id === b.id) {
-          book.shelf = b.shelf
-        } else {
-          book.shelf = 'none'
-        }
+      searchBooks.map((book) => {
+        book.shelf = 'none'
+        ourBooks.forEach((b) => {
+          if (book.id === b.id) {
+            book.shelf = b.shelf
+            console.log(book.title)
+            console.log(book.shelf)
+          }
+        })
+        return book;
       })
-    })
-    console.log(searchBooks)
-    return searchBooks
+    this.setState({searchBooks})
   }
 
   bookSearch(query) {
     BooksAPI.search(query, 20).then((searchBooks) => {
-      if (searchBooks) {
-        searchBooks = this.searchBookShelving(searchBooks)
+      if (searchBooks.length > 0) {
+        this.searchBookShelving(searchBooks)
         searchBooks = searchBooks.filter((b) => (b.imageLinks))
         this.setState({searchBooks})
+      } else {
+        this.setState({searchBooks: []})
       }
     })
   }
@@ -58,6 +62,7 @@ class Search extends Component {
   render() {
     const {searchBooks, query} = this.state;
     const {onShelfChange} = this.props;
+    console.log(searchBooks)
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -72,11 +77,13 @@ class Search extends Component {
         </div>
         <div className="search-books-results">
           <ol className="books-grid">
-          { searchBooks.map((book) => {
+          { searchBooks.length > 0 &&(
+            searchBooks.map((book) => {
               return (
                   <Book key={book.id} book={book} onShelfChange={onShelfChange} />
               )
-          })}
+            })
+          )}
           </ol>
         </div>
       </div>
