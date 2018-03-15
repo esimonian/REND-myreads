@@ -21,7 +21,7 @@ class BooksApp extends Component {
     });
   }
 
-  onShelfChange(book, e){
+  onShelfChange = (book, e) => {
     var shelf = e.target.value
     BooksAPI.update(book, shelf).then(() => {
       // Need this line to update the shelf locally
@@ -37,10 +37,10 @@ class BooksApp extends Component {
     return (
       <div className="app">
         <Route exact path="/" render={() => (
-          <ListBooks books={books} onShelfChange={this.onShelfChange.bind(this)}/>
+          <ListBooks books={books} onShelfChange={this.onShelfChange}/>
         )}/>
         <Route path="/search" render={( {history} ) => (
-            <Search onShelfChange={this.onShelfChange.bind(this)}/>
+            <Search onShelfChange={this.onShelfChange} books={books}/>
         )}/>
       </div>
     )
