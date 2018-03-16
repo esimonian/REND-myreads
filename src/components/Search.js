@@ -49,7 +49,6 @@ class Search extends Component {
     BooksAPI.search(query, 20).then((searchBooks) => {
       if (searchBooks) {
         searchBooks = this.searchBookShelving(searchBooks)
-        searchBooks = searchBooks.filter((b) => (b.imageLinks))
         this.setState({searchBooks})
       }
     })

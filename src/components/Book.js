@@ -9,6 +9,12 @@ class Book extends Component {
 
   render() {
     const {book, onShelfChange} = this.props;
+    var url =''
+    if (book.imageLinks) {
+      url = book.imageLinks.thumbnail
+    } else {
+      url = 'http://via.placeholder.com/350x150'
+    }
     return (
       <li key={book.id}>
         <div className="book">
@@ -17,7 +23,7 @@ class Book extends Component {
                  style={
                    { width: 128,
                      height: 193,
-                     backgroundImage: `url(${book.imageLinks.thumbnail})` }}></div>
+                     backgroundImage: `url(${url})` }}></div>
             <div className="book-shelf-changer">
               <select onChange={(e) => onShelfChange(book, e)} value={book.shelf}>
                 <option value="none" disabled>Move to...</option>
